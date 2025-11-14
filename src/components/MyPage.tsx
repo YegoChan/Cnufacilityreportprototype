@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { Check, Trophy, Coins, User } from 'lucide-react';
 import { PointHistory, PointTransaction } from './PointHistory';
 import { RankingSystem, RankingUser } from './RankingSystem';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface MyPageProps {
   open: boolean;
@@ -40,7 +41,7 @@ const titles = [
   { id: 'title_supporter', name: '응원단', description: '다른 제보에 공감 20번' },
   { id: 'title_collector', name: '컬렉터', description: '즐겨찾기 5개 추가' },
   { id: 'title_shopper', name: '쇼핑왕', description: '상점에서 첫 구매' },
-  { id: 'title_fashionista', name: '패셔니스타', description: '아이템 장착' },
+  { id: 'title_fashionista', name: '패션왕', description: '아이템 장착' },
   // 기존 칭호 (호환성 유지)
   { id: 'pro_complainer', name: '프로불편러', description: '제보 10개 이상 작성' },
   { id: 'picky', name: '불편한 것도 참 많은', description: '제보 5개 이상 작성' },
@@ -63,10 +64,10 @@ const titles = [
   { id: 'special', name: '스페셜', description: '특별 에디션' },
   { id: 'unique', name: '유니크', description: '세상에 하나뿐인' },
   { id: 'trendy', name: '트렌디', description: '유행을 선도하는' },
-  { id: 'cool', name: '쿨한', description: '시크하고 멋진' },
+  { id: 'cool', name: '���한', description: '시크하고 멋진' },
   { id: 'smart', name: '똑똑한', description: '지혜로운 선택' },
   { id: 'cute', name: '귀여운', description: '사랑스러운 매력' },
-  { id: 'energetic', name: '에너제틱', description: '활기찬 에너지' },
+  { id: 'energetic', name: '에너지찬', description: '활기찬 에너지' },
   { id: 'legendary', name: '전설의', description: '신화가 된' },
 ];
 
@@ -134,8 +135,12 @@ export function MyPage({
           {/* 차차 캐릭터 표시 */}
           <div className="flex flex-col items-center py-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg">
             <div className="relative">
-              <div className="w-40 h-40 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
-                <User className="w-28 h-28 text-blue-600" />
+              <div className="w-40 h-40 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center overflow-hidden">
+                <ImageWithFallback 
+                  src="https://images.unsplash.com/photo-1762086931962-e56aa2ba8c7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+                  alt="차차" 
+                  className="w-36 h-36 object-contain"
+                />
               </div>
               {/* 장착된 아이템 표시 */}
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">

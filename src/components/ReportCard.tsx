@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { useState } from 'react';
 import { items } from './MyPage';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export type ReportStatus = 'inconvenient' | 'received' | 'in_progress' | 'resolved';
 
@@ -138,7 +139,7 @@ export function ReportCard({
         {/* Image */}
         {report.image && (
           <div className="rounded-lg overflow-hidden">
-            <img
+            <ImageWithFallback
               src={report.image}
               alt={report.title}
               className="w-full h-48 object-cover"

@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { User, Settings, LogOut, ShoppingBag } from 'lucide-react';
 import { Separator } from './ui/separator';
 import { items } from './MyPage';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface SideMenuProps {
   open: boolean;
@@ -31,8 +32,12 @@ export function SideMenu({ open, onOpenChange, user, onLogout, onMyPageClick, on
         <div className="mt-6 space-y-6">
           {/* User Profile Section */}
           <div className="flex flex-col items-center text-center space-y-3">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative">
-              <User className="w-14 h-14 text-blue-600" />
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-hidden">
+              <ImageWithFallback 
+                src="https://images.unsplash.com/photo-1762086931962-e56aa2ba8c7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200"
+                alt="차차" 
+                className="w-20 h-20 object-contain"
+              />
               {/* 장착된 아이템 표시 */}
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
                 {equippedItems.map((itemId) => {

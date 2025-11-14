@@ -1080,8 +1080,12 @@ export default function App() {
                             관
                           </div>
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
-                            <User className="w-5 h-5 text-blue-600" />
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center overflow-hidden">
+                            <ImageWithFallback 
+                              src="https://images.unsplash.com/photo-1762086931962-e56aa2ba8c7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200"
+                              alt="차차" 
+                              className="w-6 h-6 object-contain"
+                            />
                           </div>
                         )}
                         <div className="flex-1">
