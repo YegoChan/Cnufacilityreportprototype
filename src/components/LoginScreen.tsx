@@ -25,8 +25,10 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8 shadow-xl">
+    <div className="min-h-screen bg-gray-100 flex justify-center">
+      {/* 모바일 앱 컨테이너 - 고정 너비 */}
+      <div className="w-full max-w-md min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 shadow-2xl flex items-center justify-center p-4">
+        <Card className="w-full p-8 shadow-xl">
         <div className="text-center mb-8">
           <div className="w-24 h-24 mx-auto mb-4">
             <img src={cnuLogo} alt="충남대학교 로고" className="w-full h-full object-contain" />
@@ -87,6 +89,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           <p>충남대학교 구성원만 이용 가능합니다</p>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

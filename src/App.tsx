@@ -646,23 +646,25 @@ export default function App() {
   }
 
   return (
-    <div 
-      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50"
-      style={{ fontSize: `${settings.fontSize}%` }}
-    >
-      <Toaster />
-      
-      {/* Side Menu */}
-      <SideMenu 
-        open={isSideMenuOpen}
-        onOpenChange={setIsSideMenuOpen}
-        user={currentUser}
-        onLogout={handleLogout}
-        onMyPageClick={() => setIsMyPageOpen(true)}
-        onShopClick={() => setIsShopOpen(true)}
-        onSettingsClick={() => setIsSettingsOpen(true)}
-        equippedItems={equippedItems}
-      />
+    <div className="min-h-screen bg-gray-100 flex justify-center">
+      {/* 모바일 앱 컨테이너 - 고정 너비 */}
+      <div 
+        className="w-full max-w-md min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 shadow-2xl relative"
+        style={{ fontSize: `${settings.fontSize}%` }}
+      >
+        <Toaster />
+        
+        {/* Side Menu */}
+        <SideMenu 
+          open={isSideMenuOpen}
+          onOpenChange={setIsSideMenuOpen}
+          user={currentUser}
+          onLogout={handleLogout}
+          onMyPageClick={() => setIsMyPageOpen(true)}
+          onShopClick={() => setIsShopOpen(true)}
+          onSettingsClick={() => setIsSettingsOpen(true)}
+          equippedItems={equippedItems}
+        />
 
       {/* My Page */}
       <MyPage
@@ -1251,7 +1253,7 @@ export default function App() {
                     <SelectItem value="화장실 수도에서 물이 나오지 않습니다. 확인 부탁드립니다.">🚰 화장실 수도 고장</SelectItem>
                     <SelectItem value="에어컨/난방이 작동하지 않아 실내 온도가 매우 불쾌합니다.">❄️ 에어컨/냉난방 고장</SelectItem>
                     <SelectItem value="조명이 깜빡이거나 켜지지 않아 어둡습니다. 교체가 필요합니다.">💡 조명 고장</SelectItem>
-                    <SelectItem value="빔프로젝터가 제대로 작동하지 않아 수업/발표에 지장이 ��습니다.">📽️ 빔프로젝터 불량</SelectItem>
+                    <SelectItem value="빔프로젝터가 제대로 작동하지 않아 수업/발표에 지장이 습니다.">📽️ 빔프로젝터 불량</SelectItem>
                     <SelectItem value="책상/의자가 파손되어 사용이 불편하거나 위험합니다.">🪑 책상/의자 파손</SelectItem>
                     <SelectItem value="바닥이나 벽에 균열이 생겨 안전에 문제가 있을 수 있습니다.">⚠️ 바닥/벽 균열</SelectItem>
                     <SelectItem value="과도한 소음으로 인해 학습/업무에 집중하기 어렵습니다.">🔊 소음 문제</SelectItem>
@@ -1388,6 +1390,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
