@@ -1,13 +1,9 @@
-import { Heart, MessageCircle, Bookmark, MapPin } from 'lucide-react';
+import { Heart, MessageCircle, Bookmark, MapPin, User } from 'lucide-react';
 import { Card } from './ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { useState } from 'react';
-import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
-import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
-import partyHatIcon from 'figma:asset/77ea7fbfe34c6f9d680d334a926446fa37ed721c.png';
-import maskIcon from 'figma:asset/09f1d980a8e475b6bd9c26317c36658e30a56143.png';
 import { items } from './MyPage';
 
 export type ReportStatus = 'inconvenient' | 'received' | 'in_progress' | 'resolved';
@@ -87,11 +83,7 @@ export function ReportCard({
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-visible">
-              <img 
-                src={chachaImage} 
-                alt="차차" 
-                className="w-8 h-8 object-contain"
-              />
+              <User className="w-6 h-6 text-blue-600" />
               {/* 장착된 아이템 표시 */}
               {report.author.equippedItems && report.author.equippedItems.length > 0 && (
                 <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
@@ -111,15 +103,7 @@ export function ReportCard({
                         key={itemId}
                         className={`absolute ${positionClass}`}
                       >
-                        {item.image ? (
-                          <img 
-                            src={itemId === 'straw_hat' ? strawHatLayer : item.image} 
-                            alt={item.name} 
-                            className="w-8 h-8 object-contain" 
-                          />
-                        ) : (
-                          <span className="text-sm">{item.emoji}</span>
-                        )}
+                        <span className="text-sm">{item.emoji}</span>
                       </div>
                     );
                   })}

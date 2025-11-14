@@ -15,14 +15,13 @@ import { RankingSystem, RankingUser } from './components/RankingSystem';
 import { mockReports, mockNotifications, Notification } from './lib/mockData';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './components/ui/dialog';
 import { Button } from './components/ui/button';
-import { Plus, Menu, ArrowUpDown, Shield, Camera, Image as ImageIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { Plus, Menu, ArrowUpDown, Shield, Camera, Image as ImageIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, User } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
 import { Badge } from './components/ui/badge';
 import { Textarea } from './components/ui/textarea';
 import { Input } from './components/ui/input';
 import { Label } from './components/ui/label';
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
-import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
 import { toast } from 'sonner@2.0.3';
 import { Toaster } from './components/ui/sonner';
 
@@ -792,7 +791,7 @@ export default function App() {
               </SelectContent>
             </Select>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {currentReports.map((report) => (
               <ReportCard 
                 key={report.id} 
@@ -1082,11 +1081,7 @@ export default function App() {
                           </div>
                         ) : (
                           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
-                            <img 
-                              src={chachaImage} 
-                              alt="차차" 
-                              className="w-6 h-6 object-contain"
-                            />
+                            <User className="w-5 h-5 text-blue-600" />
                           </div>
                         )}
                         <div className="flex-1">
@@ -1125,11 +1120,7 @@ export default function App() {
                       </div>
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
-                        <img 
-                          src={chachaImage} 
-                          alt="차차" 
-                          className="w-6 h-6 object-contain"
-                        />
+                        <User className="w-5 h-5 text-blue-600" />
                       </div>
                     )}
                     <div className="flex-1 space-y-2">
