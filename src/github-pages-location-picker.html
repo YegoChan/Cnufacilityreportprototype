@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충남대학교 위치 선택</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_APP_KEY"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        .info-box {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            z-index: 10;
+        }
+        .info-box p {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-box">
+        <p>📍 지도를 클릭하여 위치를 선택하세요</p>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        console.log('위치 선택 지도 시작');
+        
+        let selectedMarker = null;
+
+        // 지도 생성
+        window.onload = function() {
+            console.log('window.onload 실행');
+            
+            if (typeof kakao === 'undefined' || !kakao.maps) {
+                console.error('카카오맵 API가 로드되지 않았습니다');
+                return;
+            }
+
+            const container = document.getElementById('map');
+            // 충남대학교 중심 좌표
+            const cnuCenter = new kakao.maps.LatLng(36.3684, 127.3448);
+            
+            const options = {
+                center: cnuCenter,
+                level: 3
+            };
+            
+            const map = new kakao.maps.Map(container, options);
+            console.log('지도 생성 완료');
+            
+            // 컨트롤 추가
+            const mapTypeControl = new kakao.maps.MapTypeControl();
+            map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+            
+            const zoomControl = new kakao.maps.ZoomControl();
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+            // 지도 클릭 이벤트
+            kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+                const latlng = mouseEvent.latLng;
+                const lat = latlng.getLat();
+                const lng = latlng.getLng();
+                
+                console.log('클릭 위치:', lat, lng);
+                
+                // 기존 마커 제거
+                if (selectedMarker) {
+                    selectedMarker.setMap(null);
+                }
+                
+                // 마커 이미지 생성
+                const svgColor = '#2563eb';
+                const size = 40;
+                const svg = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="${svgColor}" stroke="white" stroke-width="2"/>
+                        <circle cx="12" cy="10" r="3" fill="white"/>
+                    </svg>
+                `;
+                const encoded = encodeURIComponent(svg);
+                const imageSrc = `data:image/svg+xml,${encoded}`;
+                const imageSize = new kakao.maps.Size(size, size);
+                const imageOption = { offset: new kakao.maps.Point(size / 2, size) };
+                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+                
+                // 새 마커 생성
+                selectedMarker = new kakao.maps.Marker({
+                    position: latlng,
+                    image: markerImage,
+                    map: map
+                });
+                
+                console.log('마커 생성 완료');
+                
+                // 부모 창으로 좌표 전달
+                // 위경도를 0-100 범위의 x, y로 변환
+                const baseLatLng = { lat: 36.3684, lng: 127.3448 };
+                const x = ((lng - baseLatLng.lng) / 0.003) * 50 + 50;
+                const y = ((lat - baseLatLng.lat) / 0.003) * 50 + 50;
+                
+                // 범위 제한
+                const clampedX = Math.max(0, Math.min(100, x));
+                const clampedY = Math.max(0, Math.min(100, y));
+                
+                console.log('변환된 좌표:', clampedX, clampedY);
+                
+                // postMessage로 부모에게 전달
+                window.parent.postMessage({
+                    type: 'LOCATION_SELECTED',
+                    position: {
+                        x: clampedX,
+                        y: clampedY,
+                        lat: lat,
+                        lng: lng
+                    }
+                }, '*');
+            });
+            
+            console.log('지도 클릭 이벤트 등록 완료');
+        };
+
+        // 부모로부터 메시지 받기 (초기 위치 설정 등)
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'SET_POSITION' && event.data.position) {
+                console.log('부모로부터 위치 설정 요청:', event.data.position);
+                
+                // position {x, y}를 위경도로 변환
+                const baseLatLng = { lat: 36.3684, lng: 127.3448 };
+                const lat = baseLatLng.lat + (event.data.position.y - 50) * 0.003 / 50;
+                const lng = baseLatLng.lng + (event.data.position.x - 50) * 0.003 / 50;
+                
+                // 마커 생성 로직 (위와 동일)
+                // ... (필요시 구현)
+            }
+        });
+    </script>
+</body>
+</html>

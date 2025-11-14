@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충남대학교 캠퍼스 지도</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_APP_KEY"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        console.log('스크립트 시작');
+        
+        // 제보 데이터 - 충남대학교 캠퍼스 내부에만 배치 (중심 기준 ±0.002도 이내)
+        const reports = [
+            {
+                id: '1',
+                title: '공과대학 1층 화장실 수도 고장',
+                location: '공과대학 1층',
+                likes: 67,
+                commentCount: 2,
+                lat: 36.3694,
+                lng: 127.3458,
+                status: 'resolved'
+            },
+            {
+                id: '2',
+                title: '중앙도서관 에어컨 고장',
+                location: '중앙도서관 3층',
+                likes: 89,
+                commentCount: 1,
+                lat: 36.3699,
+                lng: 127.3448,
+                status: 'in_progress'
+            },
+            {
+                id: '3',
+                title: '학생회관 식당 위생 문제',
+                location: '학생회관 2층 식당',
+                likes: 52,
+                commentCount: 0,
+                lat: 36.3674,
+                lng: 127.3438,
+                status: 'received'
+            },
+            {
+                id: '4',
+                title: '정심화관 엘리베이터 고장',
+                location: '정심화관',
+                likes: 45,
+                commentCount: 1,
+                lat: 36.3689,
+                lng: 127.3433,
+                status: 'resolved'
+            },
+            {
+                id: '5',
+                title: '자연대 강의실 빔프로젝터 불량',
+                location: '자연대 305호',
+                likes: 28,
+                commentCount: 0,
+                lat: 36.3679,
+                lng: 127.3453,
+                status: 'inconvenient'
+            },
+            {
+                id: '6',
+                title: '기숙사 샤워실 온수 안 나옴',
+                location: '기숙사 3동',
+                likes: 73,
+                commentCount: 1,
+                lat: 36.3701,
+                lng: 127.3463,
+                status: 'in_progress'
+            },
+            {
+                id: '7',
+                title: '생활과학대 복도 조명 어두움',
+                location: '생활과학대 4층',
+                likes: 36,
+                commentCount: 1,
+                lat: 36.3684,
+                lng: 127.3458,
+                status: 'resolved'
+            },
+            {
+                id: '8',
+                title: '중앙광장 벤치 페인트 벗겨짐',
+                location: '중앙광장',
+                likes: 19,
+                commentCount: 0,
+                lat: 36.3684,
+                lng: 127.3448,
+                status: 'inconvenient'
+            }
+        ];
+
+        // 상태 레이블
+        const statusLabels = {
+            'inconvenient': '불편해요',
+            'received': '문제 접수',
+            'in_progress': '해결 중',
+            'resolved': '해결 완료'
+        };
+
+        const statusColors = {
+            'inconvenient': '#fee2e2',
+            'received': '#dbeafe',
+            'in_progress': '#fef3c7',
+            'resolved': '#dcfce7'
+        };
+
+        const statusTextColors = {
+            'inconvenient': '#991b1b',
+            'received': '#1e40af',
+            'in_progress': '#854d0e',
+            'resolved': '#166534'
+        };
+
+        // 공감수에 따른 색상
+        function getMarkerColor(likes) {
+            if (likes >= 50) return 'red';
+            if (likes >= 20) return 'orange';
+            return 'yellow';
+        }
+
+        // SVG를 Data URL로 변환
+        function createMarkerImage(color, size) {
+            const svgColor = color === 'red' ? '#ef4444' : color === 'orange' ? '#f97316' : '#eab308';
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="${svgColor}" stroke="white" stroke-width="2"/>
+                    <circle cx="12" cy="10" r="3" fill="white"/>
+                </svg>
+            `;
+            const encoded = encodeURIComponent(svg);
+            return `data:image/svg+xml,${encoded}`;
+        }
+
+        // 지도 생성
+        window.onload = function() {
+            console.log('window.onload 실행');
+            console.log('kakao 객체:', typeof kakao !== 'undefined' ? '있음' : '없음');
+            
+            if (typeof kakao === 'undefined' || !kakao.maps) {
+                console.error('카카오맵 API가 로드되지 않았습니다');
+                return;
+            }
+
+            const container = document.getElementById('map');
+            // 충남대학교 중심 좌표 (본관/중앙광장 기준)
+            const cnuCenter = new kakao.maps.LatLng(36.3684, 127.3448);
+            
+            const options = {
+                center: cnuCenter,
+                level: 3  // 캠퍼스 전체가 잘 보이는 줌 레벨 (3이 적절)
+            };
+            
+            const map = new kakao.maps.Map(container, options);
+            console.log('지도 생성 완료 - 충남대 중심 (36.3684, 127.3448), 줌 레벨 3');
+            
+            // 컨트롤 추가
+            const mapTypeControl = new kakao.maps.MapTypeControl();
+            map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+            
+            const zoomControl = new kakao.maps.ZoomControl();
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+            
+            // 마커 생성
+            console.log('마커 생성 시작, 제보 개수:', reports.length);
+            
+            reports.forEach((report, index) => {
+                const position = new kakao.maps.LatLng(report.lat, report.lng);
+                
+                console.log(`마커 ${index + 1}: ${report.title} - 위도: ${report.lat}, 경도: ${report.lng}`);
+                
+                const color = getMarkerColor(report.likes);
+                const size = report.likes >= 50 ? 50 : report.likes >= 20 ? 42 : 36;
+                
+                // 마커 이미지 생성
+                const imageSrc = createMarkerImage(color, size);
+                const imageSize = new kakao.maps.Size(size, size);
+                const imageOption = { offset: new kakao.maps.Point(size / 2, size) };
+                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+                
+                // 마커 생성
+                const marker = new kakao.maps.Marker({
+                    position: position,
+                    image: markerImage,
+                    map: map
+                });
+                
+                console.log(`마커 ${index + 1} 생성 완료 - ${color} (공감수: ${report.likes})`);
+                
+                // 인포윈도우 내용
+                const infoContent = `
+                    <div style="padding: 12px; min-width: 200px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+                        <div style="font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #1a1a1a;">${report.title}</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${report.location}</div>
+                        <div style="display: flex; gap: 12px; font-size: 12px; color: #888; margin-bottom: 6px;">
+                            <span>❤️ ${report.likes}</span>
+                            <span>💬 ${report.commentCount}</span>
+                        </div>
+                        <div style="display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 11px; background: ${statusColors[report.status]}; color: ${statusTextColors[report.status]};">
+                            ${statusLabels[report.status]}
+                        </div>
+                    </div>
+                `;
+                
+                const infowindow = new kakao.maps.InfoWindow({
+                    content: infoContent,
+                    removable: false
+                });
+                
+                // 클릭 이벤트
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map, marker);
+                    
+                    // 부모 창(React 앱)에 메시지 전송
+                    console.log('🖱️ 마커 클릭됨! Report ID:', report.id);
+                    console.log('window.parent:', window.parent);
+                    console.log('window.top:', window.top);
+                    
+                    try {
+                        const message = {
+                            type: 'markerClick',
+                            reportId: report.id,
+                            reportTitle: report.title
+                        };
+                        
+                        // 부모 윈도우로 메시지 전송
+                        if (window.parent && window.parent !== window) {
+                            window.parent.postMessage(message, '*');
+                            console.log('✅ 부모 창에 메시지 전송 성공:', message);
+                        }
+                        
+                        // top 윈도우로도 전송 (이중 보장)
+                        if (window.top && window.top !== window) {
+                            window.top.postMessage(message, '*');
+                            console.log('✅ top 창에 메시지 전송 성공:', message);
+                        }
+                        
+                        if (window.parent === window && window.top === window) {
+                            console.warn('⚠️ iframe이 아닌 것 같습니다. parent와 top이 모두 자기 자신입니다.');
+                        }
+                    } catch (error) {
+                        console.error('❌ 메시지 전송 실패:', error);
+                    }
+                });
+                
+                // 마우스오버 이벤트
+                kakao.maps.event.addListener(marker, 'mouseover', function() {
+                    infowindow.open(map, marker);
+                });
+                
+                // 마우스아웃 이벤트
+                kakao.maps.event.addListener(marker, 'mouseout', function() {
+                    infowindow.close();
+                });
+            });
+            
+            console.log('모든 마커 생성 완료, 총', reports.length, '개');
+            console.log('충남대학교 캠퍼스 중심으로 고정됨');
+        };
+    </script>
+</body>
+</html>
