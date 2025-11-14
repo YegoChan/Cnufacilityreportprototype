@@ -3,8 +3,9 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { User, Settings, LogOut, ShoppingBag } from 'lucide-react';
 import { Separator } from './ui/separator';
+import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
+import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
 import { items } from './MyPage';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface SideMenuProps {
   open: boolean;
@@ -32,9 +33,9 @@ export function SideMenu({ open, onOpenChange, user, onLogout, onMyPageClick, on
         <div className="mt-6 space-y-6">
           {/* User Profile Section */}
           <div className="flex flex-col items-center text-center space-y-3">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-hidden">
-              <ImageWithFallback 
-                src="https://images.unsplash.com/photo-1762086931962-e56aa2ba8c7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200"
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative">
+              <img 
+                src={chachaImage} 
                 alt="차차" 
                 className="w-20 h-20 object-contain"
               />
@@ -56,7 +57,15 @@ export function SideMenu({ open, onOpenChange, user, onLogout, onMyPageClick, on
                       key={itemId}
                       className={`absolute ${positionClass}`}
                     >
-                      <span className="text-2xl">{item.emoji}</span>
+                      {item.image ? (
+                        <img 
+                          src={itemId === 'straw_hat' ? strawHatLayer : item.image} 
+                          alt={item.name} 
+                          className="w-20 h-20 object-contain" 
+                        />
+                      ) : (
+                        <span className="text-2xl">{item.emoji}</span>
+                      )}
                     </div>
                   );
                 })}

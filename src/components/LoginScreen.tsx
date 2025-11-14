@@ -3,7 +3,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card } from './ui/card';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import cnuLogo from 'figma:asset/f414d2884469e8ecbda59834ba23318c4b582b85.png';
 
 interface LoginScreenProps {
   onLogin: (studentId: string, isAdmin: boolean, department: string) => void;
@@ -25,17 +25,11 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center">
-      {/* 모바일 앱 컨테이너 - 고정 너비 */}
-      <div className="w-full max-w-md min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 shadow-2xl flex items-center justify-center p-4">
-        <Card className="w-full p-8 shadow-xl">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md p-8 shadow-xl">
         <div className="text-center mb-8">
           <div className="w-24 h-24 mx-auto mb-4">
-            <ImageWithFallback 
-              src="https://images.unsplash.com/photo-1695556575317-9d49e3dccf75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" 
-              alt="충남대학교 로고" 
-              className="w-full h-full object-contain rounded-full"
-            />
+            <img src={cnuLogo} alt="충남대학교 로고" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl font-bold mb-2">충남대학교</h1>
           <h2 className="text-lg text-gray-600">시설/불편 제보 시스템</h2>
@@ -93,7 +87,6 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           <p>충남대학교 구성원만 이용 가능합니다</p>
         </div>
       </Card>
-      </div>
     </div>
   );
 }
