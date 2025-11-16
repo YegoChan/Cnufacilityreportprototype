@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from './ui/sheet';
 import { Button } from './ui/button';
 import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
 import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
+import crownLayer from 'figma:asset/9aba21eef91e269ee33b1bca5c0326bdac3cca57.png';
 import { items } from './MyPage';
 
 interface SideMenuProps {
@@ -56,9 +57,15 @@ export function SideMenu({ open, onOpenChange, user, onLogout, onMyPageClick, on
                       key={itemId}
                       className={`absolute ${positionClass}`}
                     >
-                      {item.image ? (
+                      {item.layer ? (
                         <img 
-                          src={itemId === 'straw_hat' ? strawHatLayer : item.image} 
+                          src={item.layer} 
+                          alt={item.name} 
+                          className="w-20 h-20 object-contain" 
+                        />
+                      ) : item.image ? (
+                        <img 
+                          src={item.image} 
                           alt={item.name} 
                           className="w-20 h-20 object-contain" 
                         />

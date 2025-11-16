@@ -351,7 +351,7 @@ export default function App() {
         'title_popular': '인기인',
         'title_king': '공감왕',
         'title_supporter': '응원단',
-        'title_collector': '컬렉터',
+        'title_collector': '컬렉',
         'title_shopper': '쇼핑왕',
         'title_fashionista': '패션왕',
         // 기존 칭호
