@@ -32,7 +32,7 @@ export function SideMenu({ open, onOpenChange, user, onLogout, onMyPageClick, on
           <div className="flex flex-col items-center text-center space-y-3">
             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative">
               <img 
-                src={user.character} 
+                src="/chacha.png" 
                 alt="차차" 
                 className="w-20 h-20 object-contain"
               />

@@ -795,7 +795,7 @@ export default function App() {
               </SelectContent>
             </Select>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-4">
             {currentReports.map((report) => (
               <ReportCard 
                 key={report.id} 
