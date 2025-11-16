@@ -1,23 +1,23 @@
-import { useState, useMemo, useEffect } from 'react';
-import { TrendingReports } from './components/TrendingReports';
-import { ReportMap } from './components/ReportMap';
-import { LocationPickerMap } from './components/LocationPickerMap';
-import { Report, ReportCard, ReportStatus, Comment } from './components/ReportCard';
-import { NotificationPanel } from './components/NotificationPanel';
-import { LoginScreen } from './components/LoginScreen';
+import { useState, useEffect, useMemo } from 'react';
+import { ReportCard, Report, Comment, ReportStatus } from './components/ReportCard';
 import { SideMenu } from './components/SideMenu';
 import { MyPage } from './components/MyPage';
-import { SettingsPage } from './components/SettingsPage';
 import { ShopPage } from './components/ShopPage';
-import { Achievement } from './components/AchievementsTab';
-import { PointHistory, PointTransaction } from './components/PointHistory';
-import { RankingSystem, RankingUser } from './components/RankingSystem';
-import { mockReports, mockNotifications, Notification } from './lib/mockData';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './components/ui/dialog';
+import { SettingsPage } from './components/SettingsPage';
+import { LoginScreen } from './components/LoginScreen';
+import { PointTransaction } from './components/PointHistory';
+import { RankingUser } from './components/RankingSystem';
+import { Menu, Plus, TrendingUp, MapPin, X, ArrowUpDown, Shield, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ImageIcon, Camera } from 'lucide-react';
 import { Button } from './components/ui/button';
-import { Plus, Menu, ArrowUpDown, Shield, Camera, Image as ImageIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
 import { Badge } from './components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './components/ui/dialog';
 import { Textarea } from './components/ui/textarea';
 import { Input } from './components/ui/input';
 import { Label } from './components/ui/label';
@@ -25,6 +25,12 @@ import { ImageWithFallback } from './components/figma/ImageWithFallback';
 import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
 import { toast } from 'sonner@2.0.3';
 import { Toaster } from './components/ui/sonner';
+import { mockNotifications, mockReports, Notification } from './lib/mockData';
+import { NotificationPanel } from './components/NotificationPanel';
+import { TrendingReports } from './components/TrendingReports';
+import { ReportMap } from './components/ReportMap';
+import { LocationPickerMap } from './components/LocationPickerMap';
+import { Achievement } from './components/AchievementsTab';
 
 const statusConfig = {
   inconvenient: { label: '불편해요', color: 'bg-red-100 text-red-700 border-red-200' },
@@ -40,7 +46,7 @@ const achievements: Achievement[] = [
   // 제보 활동
   { id: 'first_report', title: '첫 발걸음', description: '첫 제보 작성하기', points: 50, requirement: 1, icon: '🎯', category: 'report', rewardTitle: 'title_beginner' },
   { id: 'reports_5', title: '제보 초보자', description: '제보 5개 작성하기', points: 100, requirement: 5, icon: '📝', category: 'report', rewardTitle: 'title_reporter' },
-  { id: 'reports_10', title: '제보 숙련자', description: '제보 10개 작성하기', points: 200, requirement: 10, icon: '📋', category: 'report', rewardTitle: 'title_expert' },
+  { id: 'reports_10', title: '제보 숙련자', description: '제보 10개 성하기', points: 200, requirement: 10, icon: '📋', category: 'report', rewardTitle: 'title_expert' },
   { id: 'reports_20', title: '캠퍼스 지킴이', description: '제보 20개 작성하기', points: 500, requirement: 20, icon: '🛡️', category: 'report', rewardTitle: 'title_guardian' },
   
   // 소셜 활동
@@ -57,7 +63,7 @@ const achievements: Achievement[] = [
   // 특별 업적
   { id: 'bookmarks_5', title: '컬렉터', description: '즐겨찾기 5개 추가하기', points: 80, requirement: 5, icon: '⭐', category: 'special', rewardTitle: 'title_collector' },
   { id: 'shop_purchase', title: '쇼핑 왕', description: '상점에서 첫 구매하기', points: 100, requirement: 1, icon: '🛒', category: 'special', rewardTitle: 'title_shopper' },
-  { id: 'profile_custom', title: '패셔니스타', description: '아이템 장착하기', points: 50, requirement: 1, icon: '👔', category: 'special', rewardTitle: 'title_fashionista' },
+  { id: 'profile_custom', title: '패션왕', description: '아이템 장착하기', points: 50, requirement: 1, icon: '👔', category: 'special', rewardTitle: 'title_fashionista' },
 ];
 
 export default function App() {
@@ -287,7 +293,7 @@ export default function App() {
     setIsAdminMode(isAdmin);
     setCurrentTitle('none');
     setEquippedItems([]);
-    setPoints(1000);
+    setPoints(200);
     setOwnedTitles(['none']);
     setOwnedItems([]);
   };
@@ -347,7 +353,7 @@ export default function App() {
         'title_supporter': '응원단',
         'title_collector': '컬렉터',
         'title_shopper': '쇼핑왕',
-        'title_fashionista': '패셔니스타',
+        'title_fashionista': '패션왕',
         // 기존 칭호
         'pro_complainer': '프로불편러',
         'picky': '불편한 것도 참 많은',
@@ -1251,7 +1257,7 @@ export default function App() {
                     <SelectItem value="화장실 수도에서 물이 나오지 않습니다. 확인 부탁드립니다.">🚰 화장실 수도 고장</SelectItem>
                     <SelectItem value="에어컨/난방이 작동하지 않아 실내 온도가 매우 불쾌합니다.">❄️ 에어컨/냉난방 고장</SelectItem>
                     <SelectItem value="조명이 깜빡이거나 켜지지 않아 어둡습니다. 교체가 필요합니다.">💡 조명 고장</SelectItem>
-                    <SelectItem value="빔프로젝터가 제대로 작동하지 않아 수업/발표에 지장이 ��습니다.">📽️ 빔프로젝터 불량</SelectItem>
+                    <SelectItem value="빔프로젝터가 제대로 작동하지 않아 수업/발표에 지장이 습니다.">📽️ 빔프로젝터 불량</SelectItem>
                     <SelectItem value="책상/의자가 파손되어 사용이 불편하거나 위험합니다.">🪑 책상/의자 파손</SelectItem>
                     <SelectItem value="바닥이나 벽에 균열이 생겨 안전에 문제가 있을 수 있습니다.">⚠️ 바닥/벽 균열</SelectItem>
                     <SelectItem value="과도한 소음으로 인해 학습/업무에 집중하기 어렵습니다.">🔊 소음 문제</SelectItem>

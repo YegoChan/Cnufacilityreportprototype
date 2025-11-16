@@ -2,9 +2,12 @@ import { Flame, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Report } from './ReportCard';
 import { Button } from './ui/button';
 import { useState, useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { MapPin } from 'lucide-react';
 import { Badge } from './ui/badge';
+import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
+import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
+import crownLayer from 'figma:asset/9aba21eef91e269ee33b1bca5c0326bdac3cca57.png';
+import { items } from './MyPage';
 
 interface TrendingReportsProps {
   reports: Report[];
@@ -59,10 +62,52 @@ export function TrendingReports({ reports, onReportClick }: TrendingReportsProps
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3 flex-1">
-            <Avatar className="w-10 h-10">
-              <AvatarImage src={currentReport.author.character} />
-              <AvatarFallback>{currentReport.author.nickname[0]}</AvatarFallback>
-            </Avatar>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-visible">
+              <img 
+                src={chachaImage} 
+                alt="차차" 
+                className="w-8 h-8 object-contain"
+              />
+              {/* 장착된 아이템 표시 */}
+              {currentReport.author.equippedItems && currentReport.author.equippedItems.length > 0 && (
+                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
+                  {currentReport.author.equippedItems.map((itemId) => {
+                    const item = items.find(i => i.id === itemId);
+                    if (!item) return null;
+                    
+                    // 아이템 위치 조정 (작은 사이즈용)
+                    let positionClass = '';
+                    if (item.type === 'hat') positionClass = 'top-1.5';
+                    else if (item.type === 'glasses') positionClass = 'top-2';
+                    else if (item.type === 'face') positionClass = 'top-3';
+                    else if (item.type === 'neck') positionClass = 'top-4';
+                    
+                    return (
+                      <div 
+                        key={itemId}
+                        className={`absolute ${positionClass}`}
+                      >
+                        {item.layer ? (
+                          <img 
+                            src={item.layer} 
+                            alt={item.name} 
+                            className="w-8 h-8 object-contain" 
+                          />
+                        ) : item.image ? (
+                          <img 
+                            src={item.image} 
+                            alt={item.name} 
+                            className="w-8 h-8 object-contain" 
+                          />
+                        ) : (
+                          <span className="text-sm">{item.emoji}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
             <div className="flex-1">
               <p className="font-medium">{currentReport.author.nickname}</p>
               <div className="flex items-center gap-1 text-gray-500 text-sm">

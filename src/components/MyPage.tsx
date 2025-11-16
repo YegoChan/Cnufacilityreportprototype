@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
-import { Button } from './ui/button';
 import { Check, Trophy, Coins } from 'lucide-react';
 import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
 import partyHatIcon from 'figma:asset/77ea7fbfe34c6f9d680d334a926446fa37ed721c.png';
 import strawHatIcon from 'figma:asset/b890ffe572a779aed852cd0a993a65c67a4270e4.png';
 import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
+import crownLayer from 'figma:asset/9aba21eef91e269ee33b1bca5c0326bdac3cca57.png';
 import maskIcon from 'figma:asset/09f1d980a8e475b6bd9c26317c36658e30a56143.png';
 import bowIcon from 'figma:asset/f5eb4b781c01a4eec646c2f985e5d268ceefe640.png';
 import { PointHistory, PointTransaction } from './PointHistory';
@@ -46,7 +47,7 @@ const titles = [
   { id: 'title_supporter', name: '응원단', description: '다른 제보에 공감 20번' },
   { id: 'title_collector', name: '컬렉터', description: '즐겨찾기 5개 추가' },
   { id: 'title_shopper', name: '쇼핑왕', description: '상점에서 첫 구매' },
-  { id: 'title_fashionista', name: '패셔니스타', description: '아이템 장착' },
+  { id: 'title_fashionista', name: '패션왕', description: '아이템 장착' },
   // 기존 칭호 (호환성 유지)
   { id: 'pro_complainer', name: '프로불편러', description: '제보 10개 이상 작성' },
   { id: 'picky', name: '불편한 것도 참 많은', description: '제보 5개 이상 작성' },
@@ -72,15 +73,15 @@ const titles = [
   { id: 'cool', name: '쿨한', description: '시크하고 멋진' },
   { id: 'smart', name: '똑똑한', description: '지혜로운 선택' },
   { id: 'cute', name: '귀여운', description: '사랑스러운 매력' },
-  { id: 'energetic', name: '에너제틱', description: '활기찬 에너지' },
+  { id: 'energetic', name: '에너지 넘치는', description: '활기찬 에너지' },
   { id: 'legendary', name: '전설의', description: '신화가 된' },
 ];
 
 // 아이템 목록
 export const items = [
-  { id: 'straw_hat', name: '밀짚모자', emoji: '👒', image: strawHatIcon, type: 'hat', category: '모자', description: '멋진 밀짚모자' },
+  { id: 'straw_hat', name: '밀짚모자', emoji: '👒', image: strawHatIcon, layer: strawHatLayer, type: 'hat', category: '모자', description: '멋진 밀짚모자' },
   { id: 'party_hat', name: '파티모자', emoji: '🥳', image: partyHatIcon, type: 'hat', category: '모자', description: '파티 분위기!' },
-  { id: 'crown', name: '왕관', emoji: '👑', type: 'hat', category: '모자', description: '당신은 왕!' },
+  { id: 'crown', name: '왕관', emoji: '👑', layer: crownLayer, type: 'hat', category: '모자', description: '당신은 왕!' },
   { id: 'sunglasses', name: '선글라스', emoji: '🕶️', type: 'glasses', category: '안경', description: '쿨한 선글라스' },
   { id: 'mask', name: '마스크', emoji: '🎭', image: maskIcon, type: 'face', category: '얼굴', description: '건강 제일!' },
   { id: 'bow', name: '나비넥타이', emoji: '👔', image: bowIcon, type: 'neck', category: '목걸이', description: '정장 스타일' },
@@ -163,9 +164,15 @@ export function MyPage({
                       key={itemId}
                       className={`absolute ${positionClass}`}
                     >
-                      {item.image ? (
+                      {item.layer ? (
                         <img 
-                          src={itemId === 'straw_hat' ? strawHatLayer : item.image} 
+                          src={item.layer} 
+                          alt={item.name} 
+                          className="w-40 h-40 object-contain" 
+                        />
+                      ) : item.image ? (
+                        <img 
+                          src={item.image} 
                           alt={item.name} 
                           className="w-40 h-40 object-contain" 
                         />

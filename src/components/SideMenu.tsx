@@ -1,8 +1,7 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from './ui/sheet';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
 import { User, Settings, LogOut, ShoppingBag } from 'lucide-react';
 import { Separator } from './ui/separator';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from './ui/sheet';
+import { Button } from './ui/button';
 import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
 import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
 import { items } from './MyPage';

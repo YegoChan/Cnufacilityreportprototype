@@ -101,6 +101,7 @@ export const mockReports: Report[] = [
     author: {
       nickname: '예민보스 차차',
       character: 'https://api.dicebear.com/7.x/avataaars/svg?seed=2',
+      equippedItems: ['crown'],
     },
     title: '중앙도서관 에어컨 고장',
     content: '중앙도서관 3층 열람실 에어컨이 작동하지 않습니다. 시험기간인데 너무 더워서 공부하기 힘들어요. 빠른 조치 부탁드립니다!',

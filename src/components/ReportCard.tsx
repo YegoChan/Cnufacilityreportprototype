@@ -1,11 +1,11 @@
-import { Heart, MessageCircle, Bookmark, MapPin } from 'lucide-react';
-import { Card } from './ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
+import { MapPin, Heart, MessageCircle, Bookmark } from 'lucide-react';
 import { useState } from 'react';
 import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
 import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
+import crownLayer from 'figma:asset/9aba21eef91e269ee33b1bca5c0326bdac3cca57.png';
 import partyHatIcon from 'figma:asset/77ea7fbfe34c6f9d680d334a926446fa37ed721c.png';
 import maskIcon from 'figma:asset/09f1d980a8e475b6bd9c26317c36658e30a56143.png';
 import { items } from './MyPage';
@@ -82,7 +82,7 @@ export function ReportCard({
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="p-4 space-y-3">
+      <CardContent className="p-4 space-y-3">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -111,9 +111,15 @@ export function ReportCard({
                         key={itemId}
                         className={`absolute ${positionClass}`}
                       >
-                        {item.image ? (
+                        {item.layer ? (
                           <img 
-                            src={itemId === 'straw_hat' ? strawHatLayer : item.image} 
+                            src={item.layer} 
+                            alt={item.name} 
+                            className="w-8 h-8 object-contain" 
+                          />
+                        ) : item.image ? (
+                          <img 
+                            src={item.image} 
                             alt={item.name} 
                             className="w-8 h-8 object-contain" 
                           />
@@ -196,7 +202,7 @@ export function ReportCard({
             />
           </Button>
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 }
