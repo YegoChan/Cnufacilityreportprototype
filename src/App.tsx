@@ -166,12 +166,12 @@ export default function App() {
   const endIndex = startIndex + itemsPerPage;
   const currentReports = sortedReports.slice(startIndex, endIndex);
 
-  // iframe 메시지 수신 (지도 마커 클릭 및 지도 이동)
+  // iframe 메시지 수신 (지도 마커 클릭)
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       console.log('메시지 수신:', event.data, 'from:', event.origin);
       
-      // 마커 클릭 메시지
+      // 메시지 타입 확인
       if (event.data && event.data.type === 'markerClick' && event.data.reportId) {
         console.log('🗺️ 마커 클릭 메시지 수신! reportId:', event.data.reportId);
         const report = reports.find(r => r.id === event.data.reportId);
@@ -181,19 +181,13 @@ export default function App() {
           
           // 성공 토스트
           toast.success('지도 마커 클릭', {
-            description: `${report.title}`,
+            description: `${report.title} 상세보기`,
             duration: 2000,
           });
         } else {
           console.error('❌ 제보를 찾을 수 없음. reportId:', event.data.reportId);
           console.log('현재 제보 ID 목록:', reports.map(r => r.id));
         }
-      }
-      
-      // 지도 이동/드래그 메시지 (카드 닫기)
-      if (event.data && (event.data.type === 'mapMove' || event.data.type === 'mapDrag' || event.data.type === 'mapZoom')) {
-        console.log('🗺️ 지도 이동 감지, 선택 카드 닫기');
-        setMapSelectedReport(null);
       }
     };
 
@@ -235,14 +229,6 @@ export default function App() {
       setOpenedFromNotification(false);
       setIsEditMode(false);
     }
-  };
-
-  const handleTrendingReportClick = (report: Report) => {
-    // TrendingReports에서 클릭한 경우 바로 상세 Dialog 열기
-    setSelectedReport(report);
-    setReportStatus(report.status);
-    setOpenedFromNotification(false);
-    setIsEditMode(false);
   };
 
   const handleNotificationClick = (reportId: string) => {
@@ -785,7 +771,7 @@ export default function App() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6 space-y-8">
         {/* Trending Report Billboard */}
-        <TrendingReports reports={reports} onReportClick={handleTrendingReportClick} />
+        <TrendingReports reports={reports} onReportClick={handlePinClick} />
 
         {/* Campus Map */}
         <div className="space-y-4">
@@ -871,7 +857,7 @@ export default function App() {
               <ReportCard 
                 key={report.id} 
                 report={report}
-                onCommentClick={() => handleTrendingReportClick(report)}
+                onCommentClick={() => handlePinClick(report)}
                 isLiked={likedReports.has(report.id)}
                 isBookmarked={bookmarkedReports.has(report.id)}
                 onToggleLike={handleToggleLike}
