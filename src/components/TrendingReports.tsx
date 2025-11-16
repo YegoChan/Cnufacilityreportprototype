@@ -2,13 +2,8 @@ import { useState, useEffect } from 'react';
 import { Report } from './ReportCard';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
-import { MapPin } from 'lucide-react';
+import { TrendingUp, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { Badge } from './ui/badge';
-// Public 폴더의 이미지 사용
-const chachaImage = "/chacha.png";
-const strawHatLayer = "/straw-hat-layer.png";
-const crownLayer = "/crown-layer.png";
 import { items } from './MyPage';
 
 interface TrendingReportsProps {
@@ -66,7 +61,7 @@ export function TrendingReports({ reports, onReportClick }: TrendingReportsProps
           <div className="flex items-center gap-3 flex-1">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-visible">
               <img 
-                src={chachaImage} 
+                src="/chacha.png" 
                 alt="차차" 
                 className="w-8 h-8 object-contain"
               />

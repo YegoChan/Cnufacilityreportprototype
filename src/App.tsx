@@ -22,8 +22,6 @@ import { Textarea } from './components/ui/textarea';
 import { Input } from './components/ui/input';
 import { Label } from './components/ui/label';
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
-// Public 폴더의 이미지 사용
-const chachaImage = "/chacha.png";
 import { toast } from 'sonner@2.0.3';
 import { Toaster } from './components/ui/sonner';
 import { mockNotifications, mockReports, Notification } from './lib/mockData';
@@ -1088,7 +1086,7 @@ export default function App() {
                         ) : (
                           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
                             <img 
-                              src={chachaImage} 
+                              src="/chacha.png" 
                               alt="차차" 
                               className="w-6 h-6 object-contain"
                             />
@@ -1131,7 +1129,7 @@ export default function App() {
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
                         <img 
-                          src={chachaImage} 
+                          src="/chacha.png" 
                           alt="차차" 
                           className="w-6 h-6 object-contain"
                         />

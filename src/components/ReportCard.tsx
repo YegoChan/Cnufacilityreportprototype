@@ -1,14 +1,9 @@
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader } from './ui/card';
+import { Button } from './ui/button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { MapPin, Heart, MessageCircle, Bookmark } from 'lucide-react';
 import { useState } from 'react';
-// Public 폴더의 이미지 사용
-const chachaImage = "/chacha.png";
-const strawHatLayer = "/straw-hat-layer.png";
-const crownLayer = "/crown-layer.png";
-const partyHatIcon = "/party-hat.png";
-const maskIcon = "/mask.png";
 import { items } from './MyPage';
 
 export type ReportStatus = 'inconvenient' | 'received' | 'in_progress' | 'resolved';
@@ -89,7 +84,7 @@ export function ReportCard({
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-visible">
               <img 
-                src={chachaImage} 
+                src="/chacha.png" 
                 alt="차차" 
                 className="w-8 h-8 object-contain"
               />

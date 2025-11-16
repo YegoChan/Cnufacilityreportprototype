@@ -4,14 +4,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
 import { Check, Trophy, Coins } from 'lucide-react';
-// Public 폴더의 이미지 사용
-const chachaImage = "/chacha.png";
-const partyHatIcon = "/party-hat.png";
-const strawHatIcon = "/straw-hat.png";
-const strawHatLayer = "/straw-hat-layer.png";
-const crownLayer = "/crown-layer.png";
-const maskIcon = "/mask.png";
-const bowIcon = "/bow.png";
 import { PointHistory, PointTransaction } from './PointHistory';
 import { RankingSystem, RankingUser } from './RankingSystem';
 
@@ -80,12 +72,12 @@ const titles = [
 
 // 아이템 목록
 export const items = [
-  { id: 'straw_hat', name: '밀짚모자', emoji: '👒', image: strawHatIcon, layer: strawHatLayer, type: 'hat', category: '모자', description: '멋진 밀짚모자' },
-  { id: 'party_hat', name: '파티모자', emoji: '🥳', image: partyHatIcon, type: 'hat', category: '모자', description: '파티 분위기!' },
-  { id: 'crown', name: '왕관', emoji: '👑', layer: crownLayer, type: 'hat', category: '모자', description: '당신은 왕!' },
+  { id: 'straw_hat', name: '밀짚모자', emoji: '👒', image: '/straw-hat.png', layer: '/straw-hat-layer.png', type: 'hat', category: '모자', description: '멋진 밀짚모자' },
+  { id: 'party_hat', name: '파티모자', emoji: '🥳', image: '/party-hat.png', type: 'hat', category: '모자', description: '파티 분위기!' },
+  { id: 'crown', name: '왕관', emoji: '👑', layer: '/crown-layer.png', type: 'hat', category: '모자', description: '당신은 왕!' },
   { id: 'sunglasses', name: '선글라스', emoji: '🕶️', type: 'glasses', category: '안경', description: '쿨한 선글라스' },
-  { id: 'mask', name: '마스크', emoji: '🎭', image: maskIcon, type: 'face', category: '얼굴', description: '건강 제일!' },
-  { id: 'bow', name: '나비넥타이', emoji: '👔', image: bowIcon, type: 'neck', category: '목걸이', description: '정장 스타일' },
+  { id: 'mask', name: '마스크', emoji: '🎭', image: '/mask.png', type: 'face', category: '얼굴', description: '건강 제일!' },
+  { id: 'bow', name: '나비넥타이', emoji: '👔', image: '/bow.png', type: 'neck', category: '목걸이', description: '정장 스타일' },
 ];
 
 // 카테고리 목록
@@ -143,7 +135,7 @@ export function MyPage({
           <div className="flex flex-col items-center py-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg">
             <div className="relative">
               <img 
-                src={chachaImage} 
+                src="/chacha.png" 
                 alt="차차" 
                 className="w-40 h-40 object-contain"
               />

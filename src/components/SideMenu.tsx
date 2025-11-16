@@ -2,10 +2,6 @@ import { User, Settings, LogOut, ShoppingBag } from 'lucide-react';
 import { Separator } from './ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from './ui/sheet';
 import { Button } from './ui/button';
-// Public 폴더의 이미지 사용
-const chachaImage = "/chacha.png";
-const strawHatLayer = "/straw-hat-layer.png";
-const crownLayer = "/crown-layer.png";
 import { items } from './MyPage';
 
 interface SideMenuProps {
@@ -36,7 +32,7 @@ export function SideMenu({ open, onOpenChange, user, onLogout, onMyPageClick, on
           <div className="flex flex-col items-center text-center space-y-3">
             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative">
               <img 
-                src={chachaImage} 
+                src={user.character} 
                 alt="차차" 
                 className="w-20 h-20 object-contain"
               />
