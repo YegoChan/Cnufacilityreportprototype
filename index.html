@@ -26,6 +26,7 @@
       padding: 10px;
       border-radius: 5px;
       display: none;
+      z-index: 1000;
     }
   </style>
 </head>
@@ -34,10 +35,8 @@
   <div id="error"></div>
   <div id="map"></div>
   
-  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=46de823e6fff11047613229fe0d8049f"></script>
-  
   <script>
-    console.log('스크립트 시작');
+    console.log('HTML 로드 완료');
     
     function showError(message) {
       const errorDiv = document.getElementById('error');
@@ -47,29 +46,58 @@
     }
     
     function hideLoading() {
-      document.getElementById('loading').style.display = 'none';
+      const loadingDiv = document.getElementById('loading');
+      if (loadingDiv) loadingDiv.style.display = 'none';
     }
     
-    // 카카오맵 SDK 로드 확인
-    if (typeof kakao === 'undefined') {
-      showError('카카오맵 SDK 로드 실패. API 키를 확인하세요.');
-      hideLoading();
-    } else {
-      console.log('카카오맵 SDK 로드 성공');
-      
+    // 카카오맵 SDK 동적 로드
+    function loadKakaoMapScript() {
+      return new Promise((resolve, reject) => {
+        // 이미 로드되었는지 확인
+        if (window.kakao && window.kakao.maps) {
+          console.log('카카오맵 SDK 이미 로드됨');
+          resolve();
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=46de823e6fff11047613229fe0d8049f&autoload=false';
+        
+        script.onload = () => {
+          console.log('카카오맵 스크립트 로드 완료');
+          // autoload=false 옵션을 사용했으므로 수동으로 로드
+          kakao.maps.load(() => {
+            console.log('카카오맵 SDK 초기화 완료');
+            resolve();
+          });
+        };
+        
+        script.onerror = () => {
+          console.error('카카오맵 스크립트 로드 실패');
+          reject(new Error('카카오맵 SDK 로드 실패'));
+        };
+        
+        document.head.appendChild(script);
+      });
+    }
+    
+    // 지도 초기화 함수
+    function initMap() {
       try {
-        // 카카오맵 초기화
+        console.log('지도 초기화 시작');
+        
         const container = document.getElementById('map');
         const options = {
-          center: new kakao.maps.LatLng(36.3675, 127.3447), // 충남대학교 좌표
+          center: new kakao.maps.LatLng(36.3675, 127.3447),
           level: 3
         };
         const map = new kakao.maps.Map(container, options);
         
-        console.log('지도 초기화 성공');
+        console.log('지도 생성 완료');
         hideLoading();
         
-        // 제보 데이터 (실제로는 부모로부터 받아야 함)
+        // 제보 데이터
         const reports = [
           { id: '1', lat: 36.3675, lng: 127.3447, likes: 52 },
           { id: '2', lat: 36.3680, lng: 127.3450, likes: 35 },
@@ -77,70 +105,58 @@
         ];
         
         // 마커 생성
-        const markers = [];
         reports.forEach(report => {
           const markerPosition = new kakao.maps.LatLng(report.lat, report.lng);
           
-          // 공감수에 따른 마커 이미지 설정
-          let imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-          
-          const imageSize = new kakao.maps.Size(24, 35);
-          const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-          
           const marker = new kakao.maps.Marker({
             position: markerPosition,
-            map: map,
-            image: markerImage
+            map: map
           });
           
           // 마커 클릭 이벤트
           kakao.maps.event.addListener(marker, 'click', function() {
-            console.log('마커 클릭:', report.id);
-            
-            // 부모 창에 메시지 전송
+            console.log('🎯 마커 클릭:', report.id);
             window.parent.postMessage({
               type: 'markerClick',
               reportId: report.id
             }, '*');
           });
-          
-          markers.push(marker);
         });
         
-        console.log('마커 생성 완료:', markers.length);
+        console.log('✅ 마커 생성 완료:', reports.length);
         
-        // 지도 이동 이벤트 (드래그)
+        // 지도 드래그 이벤트
         kakao.maps.event.addListener(map, 'dragstart', function() {
-          console.log('지도 드래그 시작');
-          
-          // 부모 창에 메시지 전송
-          window.parent.postMessage({
-            type: 'mapDrag'
-          }, '*');
+          console.log('🗺️ 지도 드래그');
+          window.parent.postMessage({ type: 'mapDrag' }, '*');
         });
         
-        // 지도 이동 이벤트 (줌 등)
+        // 지도 줌 이벤트
         kakao.maps.event.addListener(map, 'zoom_changed', function() {
-          console.log('지도 줌 변경');
-          
-          // 부모 창에 메시지 전송
-          window.parent.postMessage({
-            type: 'mapMove'
-          }, '*');
+          console.log('🔍 지도 줌 변경');
+          window.parent.postMessage({ type: 'mapMove' }, '*');
         });
         
-        // 초기 로드 메시지
-        console.log('부모 창에 준비 완료 메시지 전송');
-        window.parent.postMessage({
-          type: 'mapReady'
-        }, '*');
+        // 준비 완료 메시지
+        window.parent.postMessage({ type: 'mapReady' }, '*');
+        console.log('✅ 모든 초기화 완료');
         
       } catch (error) {
         showError('지도 초기화 오류: ' + error.message);
         hideLoading();
-        console.error('상세 오류:', error);
+        console.error('❌ 오류:', error);
       }
     }
+    
+    // SDK 로드 후 지도 초기화
+    loadKakaoMapScript()
+      .then(() => {
+        initMap();
+      })
+      .catch((error) => {
+        showError(error.message + ' - 카카오 개발자 콘솔에서 도메인을 등록했는지 확인하세요.');
+        hideLoading();
+      });
   </script>
 </body>
 </html>
