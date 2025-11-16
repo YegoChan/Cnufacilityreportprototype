@@ -70,6 +70,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<{ nickname: string; character: string; department: string } | null>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const [mapSelectedReport, setMapSelectedReport] = useState<Report | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
   const [reports, setReports] = useState<Report[]>(mockReports);
   const [isAdminMode, setIsAdminMode] = useState(false);
@@ -216,10 +217,18 @@ export default function App() {
   };
 
   const handlePinClick = (report: Report) => {
-    setSelectedReport(report);
-    setReportStatus(report.status);
-    setOpenedFromNotification(false);
-    setIsEditMode(false);
+    // 지도에서 클릭한 경우 mapSelectedReport에 저장
+    setMapSelectedReport(report);
+  };
+
+  const handleMapPreviewClick = () => {
+    // 간략한 카드를 클릭하면 상세 Dialog를 열기
+    if (mapSelectedReport) {
+      setSelectedReport(mapSelectedReport);
+      setReportStatus(mapSelectedReport.status);
+      setOpenedFromNotification(false);
+      setIsEditMode(false);
+    }
   };
 
   const handleNotificationClick = (reportId: string) => {
@@ -773,6 +782,54 @@ export default function App() {
             </p>
           </div>
           <ReportMap reports={reports} onPinClick={handlePinClick} />
+          
+          {/* 지도에서 선택된 제보 미리보기 */}
+          {mapSelectedReport && (
+            <div 
+              className="bg-white rounded-lg border shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow relative"
+              onClick={handleMapPreviewClick}
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute top-2 right-2 h-6 w-6 p-0"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMapSelectedReport(null);
+                }}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center flex-shrink-0">
+                  <img 
+                    src="/chacha.png" 
+                    alt="차차" 
+                    className="w-8 h-8 object-contain"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-sm mb-1 truncate">{mapSelectedReport.title}</h4>
+                  <p className="text-xs text-gray-600 mb-2 flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    {mapSelectedReport.location}
+                  </p>
+                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <span className="flex items-center gap-1">
+                      ❤️ {mapSelectedReport.likes}
+                    </span>
+                    <Badge 
+                      variant="outline" 
+                      className={`${statusConfig[mapSelectedReport.status].color} text-xs`}
+                    >
+                      {statusConfig[mapSelectedReport.status].label}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-blue-600 mt-2 text-center">클릭하여 상세보기 →</p>
+            </div>
+          )}
         </div>
 
         {/* Report List */}
