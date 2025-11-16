@@ -5,81 +5,142 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>충남대학교 캠퍼스 지도</title>
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=46de823e6fff11047613229fe0d8049f"></script>
   <style>
     body, html { margin: 0; padding: 0; width: 100%; height: 100%; }
     #map { width: 100%; height: 100%; }
+    #loading { 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      font-weight: bold;
+    }
+    #error {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      background: #ff6b6b;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
   </style>
 </head>
 <body>
+  <div id="loading">지도 로딩 중...</div>
+  <div id="error"></div>
   <div id="map"></div>
   
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=46de823e6fff11047613229fe0d8049f"></script>
+  
   <script>
-    // 카카오맵 초기화
-    const container = document.getElementById('map');
-    const options = {
-      center: new kakao.maps.LatLng(36.3675, 127.3447), // 충남대학교 좌표
-      level: 3
-    };
-    const map = new kakao.maps.Map(container, options);
+    console.log('스크립트 시작');
     
-    // 제보 데이터 (실제로는 부모로부터 받아야 함)
-    const reports = [
-      { id: '1', lat: 36.3675, lng: 127.3447, likes: 52 },
-      { id: '2', lat: 36.3680, lng: 127.3450, likes: 35 },
-      { id: '3', lat: 36.3670, lng: 127.3440, likes: 15 },
-      // ... 더 많은 제보
-    ];
-    
-    // 마커 색상 결정 함수
-    function getMarkerColor(likes) {
-      if (likes >= 50) return 'red';
-      if (likes >= 20) return 'orange';
-      return 'yellow';
+    function showError(message) {
+      const errorDiv = document.getElementById('error');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      console.error(message);
     }
     
-    // 마커 생성
-    const markers = [];
-    reports.forEach(report => {
-      const markerPosition = new kakao.maps.LatLng(report.lat, report.lng);
-      const marker = new kakao.maps.Marker({
-        position: markerPosition,
-        map: map
-      });
+    function hideLoading() {
+      document.getElementById('loading').style.display = 'none';
+    }
+    
+    // 카카오맵 SDK 로드 확인
+    if (typeof kakao === 'undefined') {
+      showError('카카오맵 SDK 로드 실패. API 키를 확인하세요.');
+      hideLoading();
+    } else {
+      console.log('카카오맵 SDK 로드 성공');
       
-      // 마커 클릭 이벤트
-      kakao.maps.event.addListener(marker, 'click', function() {
-        console.log('마커 클릭:', report.id);
+      try {
+        // 카카오맵 초기화
+        const container = document.getElementById('map');
+        const options = {
+          center: new kakao.maps.LatLng(36.3675, 127.3447), // 충남대학교 좌표
+          level: 3
+        };
+        const map = new kakao.maps.Map(container, options);
         
-        // 부모 창에 메시지 전송
+        console.log('지도 초기화 성공');
+        hideLoading();
+        
+        // 제보 데이터 (실제로는 부모로부터 받아야 함)
+        const reports = [
+          { id: '1', lat: 36.3675, lng: 127.3447, likes: 52 },
+          { id: '2', lat: 36.3680, lng: 127.3450, likes: 35 },
+          { id: '3', lat: 36.3670, lng: 127.3440, likes: 15 },
+        ];
+        
+        // 마커 생성
+        const markers = [];
+        reports.forEach(report => {
+          const markerPosition = new kakao.maps.LatLng(report.lat, report.lng);
+          
+          // 공감수에 따른 마커 이미지 설정
+          let imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+          
+          const imageSize = new kakao.maps.Size(24, 35);
+          const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          
+          const marker = new kakao.maps.Marker({
+            position: markerPosition,
+            map: map,
+            image: markerImage
+          });
+          
+          // 마커 클릭 이벤트
+          kakao.maps.event.addListener(marker, 'click', function() {
+            console.log('마커 클릭:', report.id);
+            
+            // 부모 창에 메시지 전송
+            window.parent.postMessage({
+              type: 'markerClick',
+              reportId: report.id
+            }, '*');
+          });
+          
+          markers.push(marker);
+        });
+        
+        console.log('마커 생성 완료:', markers.length);
+        
+        // 지도 이동 이벤트 (드래그)
+        kakao.maps.event.addListener(map, 'dragstart', function() {
+          console.log('지도 드래그 시작');
+          
+          // 부모 창에 메시지 전송
+          window.parent.postMessage({
+            type: 'mapDrag'
+          }, '*');
+        });
+        
+        // 지도 이동 이벤트 (줌 등)
+        kakao.maps.event.addListener(map, 'zoom_changed', function() {
+          console.log('지도 줌 변경');
+          
+          // 부모 창에 메시지 전송
+          window.parent.postMessage({
+            type: 'mapMove'
+          }, '*');
+        });
+        
+        // 초기 로드 메시지
+        console.log('부모 창에 준비 완료 메시지 전송');
         window.parent.postMessage({
-          type: 'markerClick',
-          reportId: report.id
+          type: 'mapReady'
         }, '*');
-      });
-      
-      markers.push(marker);
-    });
-    
-    // 지도 이동 이벤트 (드래그)
-    kakao.maps.event.addListener(map, 'dragstart', function() {
-      console.log('지도 드래그 시작');
-      
-      // 부모 창에 메시지 전송
-      window.parent.postMessage({
-        type: 'mapDrag'
-      }, '*');
-    });
-    
-    // 지도 이동 이벤트 (줌 등)
-    kakao.maps.event.addListener(map, 'zoom_changed', function() {
-      console.log('지도 줌 변경');
-      
-      // 부모 창에 메시지 전송
-      window.parent.postMessage({
-        type: 'mapMove'
-      }, '*');
-    });
+        
+      } catch (error) {
+        showError('지도 초기화 오류: ' + error.message);
+        hideLoading();
+        console.error('상세 오류:', error);
+      }
+    }
   </script>
 </body>
 </html>
