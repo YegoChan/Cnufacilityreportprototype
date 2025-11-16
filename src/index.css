@@ -3083,6 +3083,32 @@ html {
   font-size: var(--font-size);
 }
 
+body {
+  background: #1a1a1a;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  background: #fff;
+  max-width: 440px;
+  min-height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 0 50px #0000004d;
+}
+
+@media (width <= 440px) {
+  #root {
+    max-width: 100%;
+    box-shadow: none;
+  }
+
+  body {
+    background: #fff;
+  }
+}
+
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;

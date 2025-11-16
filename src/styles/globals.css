@@ -190,3 +190,30 @@
 html {
   font-size: var(--font-size);
 }
+
+/* 모바일 앱 스타일 - 데스크탑에서도 모바일 앱처럼 보이게 */
+body {
+  margin: 0;
+  padding: 0;
+  background: #1a1a1a;
+}
+
+#root {
+  max-width: 440px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  min-height: 100vh;
+  position: relative;
+}
+
+@media (max-width: 440px) {
+  #root {
+    max-width: 100%;
+    box-shadow: none;
+  }
+  
+  body {
+    background: white;
+  }
+}
