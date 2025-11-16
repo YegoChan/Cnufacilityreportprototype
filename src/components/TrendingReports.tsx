@@ -1,12 +1,14 @@
-import { Flame, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Report } from './ReportCard';
-import { Button } from './ui/button';
 import { useState, useEffect } from 'react';
+import { Report } from './ReportCard';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
+import { TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { MapPin } from 'lucide-react';
 import { Badge } from './ui/badge';
-import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
-import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
-import crownLayer from 'figma:asset/9aba21eef91e269ee33b1bca5c0326bdac3cca57.png';
+// Public 폴더의 이미지 사용
+const chachaImage = "/chacha.png";
+const strawHatLayer = "/straw-hat-layer.png";
+const crownLayer = "/crown-layer.png";
 import { items } from './MyPage';
 
 interface TrendingReportsProps {
@@ -52,7 +54,7 @@ export function TrendingReports({ reports, onReportClick }: TrendingReportsProps
   return (
     <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-6 shadow-lg border-2 border-orange-200">
       <div className="flex items-center gap-2 mb-4">
-        <Flame className="w-6 h-6 text-orange-500" />
+        <TrendingUp className="w-6 h-6 text-orange-500" />
         <h2 className="text-2xl font-bold">지금 뜨는 불편함</h2>
       </div>
       

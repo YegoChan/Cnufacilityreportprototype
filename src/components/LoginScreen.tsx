@@ -3,7 +3,8 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card } from './ui/card';
-import cnuLogo from 'figma:asset/f414d2884469e8ecbda59834ba23318c4b582b85.png';
+// Public 폴더의 이미지 사용
+const cnuLogo = "/cnu-logo.png";
 
 interface LoginScreenProps {
   onLogin: (studentId: string, isAdmin: boolean, department: string) => void;

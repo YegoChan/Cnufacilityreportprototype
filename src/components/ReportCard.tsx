@@ -1,13 +1,14 @@
 import { Badge } from './ui/badge';
-import { Card, CardContent } from './ui/card';
-import { Button } from './ui/button';
+import { Card, CardContent, CardHeader } from './ui/card';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 import { MapPin, Heart, MessageCircle, Bookmark } from 'lucide-react';
 import { useState } from 'react';
-import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
-import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
-import crownLayer from 'figma:asset/9aba21eef91e269ee33b1bca5c0326bdac3cca57.png';
-import partyHatIcon from 'figma:asset/77ea7fbfe34c6f9d680d334a926446fa37ed721c.png';
-import maskIcon from 'figma:asset/09f1d980a8e475b6bd9c26317c36658e30a56143.png';
+// Public 폴더의 이미지 사용
+const chachaImage = "/chacha.png";
+const strawHatLayer = "/straw-hat-layer.png";
+const crownLayer = "/crown-layer.png";
+const partyHatIcon = "/party-hat.png";
+const maskIcon = "/mask.png";
 import { items } from './MyPage';
 
 export type ReportStatus = 'inconvenient' | 'received' | 'in_progress' | 'resolved';

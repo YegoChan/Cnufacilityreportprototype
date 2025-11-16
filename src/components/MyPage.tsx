@@ -4,13 +4,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
 import { Check, Trophy, Coins } from 'lucide-react';
-import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
-import partyHatIcon from 'figma:asset/77ea7fbfe34c6f9d680d334a926446fa37ed721c.png';
-import strawHatIcon from 'figma:asset/b890ffe572a779aed852cd0a993a65c67a4270e4.png';
-import strawHatLayer from 'figma:asset/2aecfd77b3d45ba095657cd7821f19cdee39f362.png';
-import crownLayer from 'figma:asset/9aba21eef91e269ee33b1bca5c0326bdac3cca57.png';
-import maskIcon from 'figma:asset/09f1d980a8e475b6bd9c26317c36658e30a56143.png';
-import bowIcon from 'figma:asset/f5eb4b781c01a4eec646c2f985e5d268ceefe640.png';
+// Public 폴더의 이미지 사용
+const chachaImage = "/chacha.png";
+const partyHatIcon = "/party-hat.png";
+const strawHatIcon = "/straw-hat.png";
+const strawHatLayer = "/straw-hat-layer.png";
+const crownLayer = "/crown-layer.png";
+const maskIcon = "/mask.png";
+const bowIcon = "/bow.png";
 import { PointHistory, PointTransaction } from './PointHistory';
 import { RankingSystem, RankingUser } from './RankingSystem';
 

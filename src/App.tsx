@@ -22,7 +22,8 @@ import { Textarea } from './components/ui/textarea';
 import { Input } from './components/ui/input';
 import { Label } from './components/ui/label';
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
-import chachaImage from 'figma:asset/58a6df21cd2b1931395a1e589b5c4237d4dac6ee.png';
+// Public 폴더의 이미지 사용
+const chachaImage = "/chacha.png";
 import { toast } from 'sonner@2.0.3';
 import { Toaster } from './components/ui/sonner';
 import { mockNotifications, mockReports, Notification } from './lib/mockData';
