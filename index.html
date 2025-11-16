@@ -1,15 +1,149 @@
-
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>충남대학교 불편함 제보 앱</title>
-    </head>
-
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>충남대학교 캠퍼스 지도</title>
+  <style>
+    body, html { margin: 0; padding: 0; width: 100%; height: 100%; }
+    #map { width: 100%; height: 100%; }
+    #loading { 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      font-weight: bold;
+    }
+    #error {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      background: #ff6b6b;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">지도 로딩 중...</div>
+  <div id="error"></div>
+  <div id="map"></div>
   
+  <script>
+    console.log('HTML 로드 완료');
+    
+    function showError(message) {
+      const errorDiv = document.getElementById('error');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      console.error(message);
+    }
+    
+    function hideLoading() {
+      const loadingDiv = document.getElementById('loading');
+      if (loadingDiv) loadingDiv.style.display = 'none';
+    }
+    
+    // 카카오맵 SDK 동적 로드
+    function loadKakaoMapScript() {
+      return new Promise((resolve, reject) => {
+        if (window.kakao && window.kakao.maps) {
+          console.log('카카오맵 SDK 이미 로드됨');
+          resolve();
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=46de823e6fff11047613229fe0d8049f&autoload=false';
+        
+        script.onload = () => {
+          console.log('카카오맵 스크립트 로드 완료');
+          kakao.maps.load(() => {
+            console.log('카카오맵 SDK 초기화 완료');
+            resolve();
+          });
+        };
+        
+        script.onerror = () => {
+          console.error('카카오맵 스크립트 로드 실패');
+          reject(new Error('카카오맵 SDK 로드 실패'));
+        };
+        
+        document.head.appendChild(script);
+      });
+    }
+    
+    // 지도 초기화 함수
+    function initMap() {
+      try {
+        console.log('지도 초기화 시작');
+        
+        const container = document.getElementById('map');
+        const options = {
+          center: new kakao.maps.LatLng(36.3675, 127.3447),
+          level: 3
+        };
+        const map = new kakao.maps.Map(container, options);
+        
+        console.log('지도 생성 완료');
+        hideLoading();
+        
+        // 제보 데이터
+        const reports = [
+          { id: '1', lat: 36.3675, lng: 127.3447, likes: 52 },
+          { id: '2', lat: 36.3680, lng: 127.3450, likes: 35 },
+          { id: '3', lat: 36.3670, lng: 127.3440, likes: 15 },
+        ];
+        
+        // 마커 생성
+        reports.forEach(report => {
+          const markerPosition = new kakao.maps.LatLng(report.lat, report.lng);
+          
+          const marker = new kakao.maps.Marker({
+            position: markerPosition,
+            map: map
+          });
+          
+          // 마커 클릭 이벤트
+          kakao.maps.event.addListener(marker, 'click', function() {
+            console.log('🎯 마커 클릭:', report.id);
+            window.parent.postMessage({
+              type: 'markerClick',
+              reportId: report.id
+            }, '*');
+          });
+        });
+        
+        console.log('✅ 마커 생성 완료:', reports.length);
+        
+        // 준비 완료 메시지
+        window.parent.postMessage({ type: 'mapReady' }, '*');
+        console.log('✅ 모든 초기화 완료');
+        
+      } catch (error) {
+        showError('지도 초기화 오류: ' + error.message);
+        hideLoading();
+        console.error('❌ 오류:', error);
+      }
+    }
+    
+    // SDK 로드 후 지도 초기화
+    loadKakaoMapScript()
+      .then(() => {
+        initMap();
+      })
+      .catch((error) => {
+        showError(error.message + ' - 카카오 개발자 콘솔에서 도메인을 등록했는지 확인하세요.');
+        hideLoading();
+      });
+  </script>
+</body>
+</html>
+```
