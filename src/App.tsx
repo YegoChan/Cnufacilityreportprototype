@@ -178,12 +178,6 @@ export default function App() {
         if (report) {
           console.log('✅ 제보 찾음:', report.title);
           handlePinClick(report);
-          
-          // 성공 토스트
-          toast.success('지도 마커 클릭', {
-            description: `${report.title} 상세보기`,
-            duration: 2000,
-          });
         } else {
           console.error('❌ 제보를 찾을 수 없음. reportId:', event.data.reportId);
           console.log('현재 제보 ID 목록:', reports.map(r => r.id));
