@@ -217,8 +217,10 @@ export default function App() {
   };
 
   const handlePinClick = (report: Report) => {
-    // 지도에서 클릭한 경우 mapSelectedReport에 저장
-    setMapSelectedReport(report);
+    // 상세 다이얼로그 바로 열기
+    setSelectedReport(report);
+    setReportStatus(report.status);
+    setOpenedFromNotification(false);
   };
 
   const handleMapPreviewClick = () => {

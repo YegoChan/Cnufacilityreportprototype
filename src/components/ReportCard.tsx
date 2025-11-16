@@ -64,20 +64,32 @@ export function ReportCard({
   onToggleLike,
   onToggleBookmark
 }: ReportCardProps) {
-  const handleLike = () => {
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
     if (onToggleLike) {
       onToggleLike(report.id);
     }
   };
 
-  const handleBookmark = () => {
+  const handleBookmark = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
     if (onToggleBookmark) {
       onToggleBookmark(report.id);
     }
   };
 
+  const handleCommentClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 카드 클릭과 중복 방지
+    if (onCommentClick) {
+      onCommentClick();
+    }
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card 
+      className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={onCommentClick}
+    >
       <CardContent className="p-4 space-y-3">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -182,7 +194,7 @@ export function ReportCard({
               variant="ghost" 
               size="sm" 
               className="gap-2"
-              onClick={onCommentClick}
+              onClick={handleCommentClick}
             >
               <MessageCircle className="w-5 h-5" />
               <span>{report.commentCount}</span>

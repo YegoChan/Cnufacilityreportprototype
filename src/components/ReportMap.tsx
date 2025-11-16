@@ -31,14 +31,13 @@ export function ReportMap({ reports, onPinClick }: ReportMapProps) {
 
         {/* 외부 지도 Iframe */}
         <iframe 
-          src="https://yegochan.github.io/figma-map-prototype/"
-          className="w-full h-[500px] border-0"
+          src={`https://yegochan.github.io/figma-map-prototype/?v=${Date.now()}`}
+          className="w-full h-[500px] border-0 block"
           title="충남대학교 캠퍼스 지도"
           allow="geolocation; fullscreen"
           sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
           referrerPolicy="no-referrer-when-downgrade"
           loading="eager"
-          style={{ display: 'block', width: '100%', height: '500px' }}
         />
       </Card>
     </div>
