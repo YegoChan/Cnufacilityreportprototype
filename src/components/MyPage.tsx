@@ -38,7 +38,6 @@ const titles = [
   { id: 'title_popular', name: '인기인', description: '공감 50개 받기' },
   { id: 'title_king', name: '공감왕', description: '공감 100개 받기' },
   { id: 'title_supporter', name: '응원단', description: '다른 제보에 공감 20번' },
-  { id: 'title_collector', name: '컬렉터', description: '즐겨찾기 5개 추가' },
   { id: 'title_shopper', name: '쇼핑왕', description: '상점에서 첫 구매' },
   { id: 'title_fashionista', name: '패션왕', description: '아이템 장착' },
   // 기존 칭호 (호환성 유지)

@@ -2,7 +2,7 @@ import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader } from './ui/card';
 import { Button } from './ui/button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { MapPin, Heart, MessageCircle, Bookmark } from 'lucide-react';
+import { MapPin, Heart, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import { items } from './MyPage';
 
@@ -43,9 +43,7 @@ interface ReportCardProps {
   compact?: boolean;
   onCommentClick?: () => void;
   isLiked?: boolean;
-  isBookmarked?: boolean;
   onToggleLike?: (reportId: string) => void;
-  onToggleBookmark?: (reportId: string) => void;
 }
 
 const statusConfig = {
@@ -60,21 +58,12 @@ export function ReportCard({
   compact = false, 
   onCommentClick,
   isLiked = false,
-  isBookmarked = false,
-  onToggleLike,
-  onToggleBookmark
+  onToggleLike
 }: ReportCardProps) {
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
     if (onToggleLike) {
       onToggleLike(report.id);
-    }
-  };
-
-  const handleBookmark = (e: React.MouseEvent) => {
-    e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
-    if (onToggleBookmark) {
-      onToggleBookmark(report.id);
     }
   };
 
@@ -200,15 +189,6 @@ export function ReportCard({
               <span>{report.commentCount}</span>
             </Button>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBookmark}
-          >
-            <Bookmark
-              className={`w-5 h-5 ${isBookmarked ? 'fill-yellow-500 text-yellow-500' : ''}`}
-            />
-          </Button>
         </div>
       </CardContent>
     </Card>

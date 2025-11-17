@@ -60,7 +60,6 @@ const achievements: Achievement[] = [
   { id: 'give_likes_20', title: '응원단', description: '다른 제보에 공감 20번 누르기', points: 100, requirement: 20, icon: '👏', category: 'engagement', rewardTitle: 'title_supporter' },
   
   // 특별 업적
-  { id: 'bookmarks_5', title: '컬렉터', description: '즐겨찾기 5개 추가하기', points: 80, requirement: 5, icon: '⭐', category: 'special', rewardTitle: 'title_collector' },
   { id: 'shop_purchase', title: '쇼핑 왕', description: '상점에서 첫 구매하기', points: 100, requirement: 1, icon: '🛒', category: 'special', rewardTitle: 'title_shopper' },
   { id: 'profile_custom', title: '패션왕', description: '아이템 장착하기', points: 50, requirement: 1, icon: '👔', category: 'special', rewardTitle: 'title_fashionista' },
 ];
@@ -106,7 +105,6 @@ export default function App() {
   const [itemsPerPage] = useState(9);
   const [pageInput, setPageInput] = useState('');
   const [likedReports, setLikedReports] = useState<Set<string>>(new Set());
-  const [bookmarkedReports, setBookmarkedReports] = useState<Set<string>>(new Set());
   const [completedAchievements, setCompletedAchievements] = useState<Set<string>>(new Set());
   const [achievementProgress, setAchievementProgress] = useState<Record<string, number>>({});
   const [pointHistory, setPointHistory] = useState<PointTransaction[]>([]);
@@ -267,18 +265,6 @@ export default function App() {
       }
       return report;
     }));
-  };
-
-  const handleToggleBookmark = (reportId: string) => {
-    setBookmarkedReports(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(reportId)) {
-        newSet.delete(reportId);
-      } else {
-        newSet.add(reportId);
-      }
-      return newSet;
-    });
   };
 
   const handleStatusChange = (newStatus: ReportStatus) => {
@@ -464,9 +450,6 @@ export default function App() {
     // 내가 누른 공감 수
     const giveLikesCount = likedReports.size;
     
-    // 즐겨찾기 수
-    const bookmarksCount = bookmarkedReports.size;
-    
     // 구매한 아이템 수
     const purchasedItemsCount = ownedItems.length;
     
@@ -486,7 +469,6 @@ export default function App() {
       likes_50: totalLikesReceived,
       likes_100: totalLikesReceived,
       give_likes_20: giveLikesCount,
-      bookmarks_5: bookmarksCount,
       shop_purchase: purchasedItemsCount,
       profile_custom: equippedItemsCount,
     };
@@ -518,7 +500,7 @@ export default function App() {
     if (currentUser) {
       checkAchievements();
     }
-  }, [reports, likedReports, bookmarkedReports, ownedItems, equippedItems]);
+  }, [reports, likedReports, ownedItems, equippedItems]);
 
   const handleSubmitReport = () => {
     if (!newReportTitle.trim() || !newReportPosition || !newReportContent.trim()) {
@@ -855,9 +837,7 @@ export default function App() {
                 report={report}
                 onCommentClick={() => handlePinClick(report)}
                 isLiked={likedReports.has(report.id)}
-                isBookmarked={bookmarkedReports.has(report.id)}
                 onToggleLike={handleToggleLike}
-                onToggleBookmark={handleToggleBookmark}
               />
             ))}
           </div>
@@ -1082,9 +1062,7 @@ export default function App() {
                 <ReportCard 
                   report={{ ...selectedReport, status: reportStatus }}
                   isLiked={likedReports.has(selectedReport.id)}
-                  isBookmarked={bookmarkedReports.has(selectedReport.id)}
                   onToggleLike={handleToggleLike}
-                  onToggleBookmark={handleToggleBookmark}
                 />
               )}
               
