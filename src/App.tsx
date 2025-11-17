@@ -1106,6 +1106,39 @@ export default function App() {
                     // 현재 사용자의 댓글이면 실시간 equippedItems 사용, 아니면 저장된 것 사용
                     const displayEquippedItems = isMyComment ? equippedItems : (comment.author.equippedItems || []);
                     
+                    // 칭호 표시 이름 맵
+                    const titleMap: { [key: string]: string } = {
+                      'none': '',
+                      'title_beginner': '새내기',
+                      'title_reporter': '제보러',
+                      'title_expert': '전문가',
+                      'title_guardian': '캠퍼스 지킴이',
+                      'title_chatterer': '수다쟁이',
+                      'title_talker': '말빨',
+                      'title_communicator': '소통왕',
+                      'title_liked': '인싸',
+                      'title_popular': '인기인',
+                      'title_king': '공감왕',
+                      'title_supporter': '응원단',
+                      'title_collector': '컬렉',
+                      'title_shopper': '쇼핑왕',
+                      'title_fashionista': '패션왕',
+                      'pro_complainer': '프로불편러',
+                      'picky': '불편한 것도 참 많은',
+                      'sensitive': '예민보스',
+                      'detail_oriented': '디테일 장인',
+                      'campus_guardian': '캠퍼스 지킴이',
+                      'issue_hunter': '불편 사냥꾼',
+                      'complaint_master': '컴플레인 마스터',
+                    };
+                    
+                    // 현재 사용자의 댓글이면 실시간 칭호 사용, 아니면 저장된 칭호 사용
+                    let displayNickname = comment.author.nickname;
+                    if (isMyComment && !comment.isAdmin) {
+                      const titleName = titleMap[currentTitle] || '';
+                      displayNickname = titleName ? `${titleName} 차차` : '차차';
+                    }
+                    
                     return (
                     <div 
                       key={comment.id} 
@@ -1171,7 +1204,7 @@ export default function App() {
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 mb-1">
-                              <p className="font-medium text-sm">{comment.author.nickname}</p>
+                              <p className="font-medium text-sm">{displayNickname}</p>
                               {comment.isAdmin && (
                                 <Badge variant="outline" className="text-xs">관리자</Badge>
                               )}
