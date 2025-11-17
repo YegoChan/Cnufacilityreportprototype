@@ -77,6 +77,7 @@ export const mockReports: Report[] = [
         author: {
           nickname: '불편 사냥꾼 차차',
           character: 'https://api.dicebear.com/7.x/avataaars/svg?seed=student1',
+          studentId: '20241001',
         },
         content: '저도 어제 같은 문제 겪었어요.',
         timestamp: '1시간 전',
@@ -86,6 +87,7 @@ export const mockReports: Report[] = [
         author: {
           nickname: '시설관리팀',
           character: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
+          studentId: 'admin001',
         },
         content: '수리가 완료되었습니다. 확인해주세요!',
         timestamp: '30분 전',
@@ -115,6 +117,7 @@ export const mockReports: Report[] = [
         author: {
           nickname: '시설관리팀',
           character: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
+          studentId: 'admin001',
         },
         content: '접수 완료했습니다. 조속히 처리하겠습니다.',
         timestamp: '2시간 전',
@@ -159,6 +162,7 @@ export const mockReports: Report[] = [
         author: {
           nickname: '시설관리팀',
           character: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
+          studentId: 'admin001',
         },
         content: '수리가 완료되었습니다. 확인해주세요!',
         timestamp: '30분 전',

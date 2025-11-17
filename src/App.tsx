@@ -66,7 +66,7 @@ const achievements: Achievement[] = [
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{ nickname: string; character: string; department: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{ nickname: string; character: string; department: string; studentId: string } | null>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [mapSelectedReport, setMapSelectedReport] = useState<Report | null>(null);
@@ -278,7 +278,7 @@ export default function App() {
     // Generate a nickname - 모든 사용자는 '차차'로 통일
     const baseNickname = isAdmin ? '관리자' : '차차';
     const character = `https://api.dicebear.com/7.x/avataaars/svg?seed=${studentId}`;
-    setCurrentUser({ nickname: baseNickname, character, department });
+    setCurrentUser({ nickname: baseNickname, character, department, studentId });
     setIsLoggedIn(true);
     setIsAdminMode(isAdmin);
     setCurrentTitle('none');
@@ -1101,8 +1101,8 @@ export default function App() {
                   )}
                   
                   {selectedReport.comments && selectedReport.comments.map((comment) => {
-                    // 현재 사용자의 댓글인지 확인
-                    const isMyComment = currentUser && comment.author.nickname === currentUser.nickname;
+                    // 현재 사용자의 댓글인지 확인 (studentId로 비교)
+                    const isMyComment = currentUser && comment.author.studentId === currentUser.studentId;
                     // 현재 사용자의 댓글이면 실시간 equippedItems 사용, 아니면 저장된 것 사용
                     const displayEquippedItems = isMyComment ? equippedItems : (comment.author.equippedItems || []);
                     
@@ -1176,7 +1176,7 @@ export default function App() {
                                 <Badge variant="outline" className="text-xs">관리자</Badge>
                               )}
                             </div>
-                            {currentUser && comment.author.nickname === currentUser.nickname && (
+                            {isMyComment && (
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -1274,7 +1274,9 @@ export default function App() {
                             author: {
                               nickname: currentUser.nickname,
                               character: currentUser.character,
+                              studentId: currentUser.studentId,
                               equippedItems: equippedItems,
+                              title: currentTitle,
                             },
                             content: newComment,
                             timestamp: '방금 전',

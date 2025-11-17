@@ -13,7 +13,9 @@ export interface Comment {
   author: {
     nickname: string;
     character: string;
+    studentId: string;
     equippedItems?: string[];
+    title?: string;
   };
   content: string;
   timestamp: string;
