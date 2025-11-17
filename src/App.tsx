@@ -1100,7 +1100,13 @@ export default function App() {
                     <p className="text-sm text-gray-500 text-center py-4">아직 댓글이 없습니다.</p>
                   )}
                   
-                  {selectedReport.comments && selectedReport.comments.map((comment) => (
+                  {selectedReport.comments && selectedReport.comments.map((comment) => {
+                    // 현재 사용자의 댓글인지 확인
+                    const isMyComment = currentUser && comment.author.nickname === currentUser.nickname;
+                    // 현재 사용자의 댓글이면 실시간 equippedItems 사용, 아니면 저장된 것 사용
+                    const displayEquippedItems = isMyComment ? equippedItems : (comment.author.equippedItems || []);
+                    
+                    return (
                     <div 
                       key={comment.id} 
                       className={`rounded-lg p-3 ${
@@ -1122,9 +1128,9 @@ export default function App() {
                               className="w-6 h-6 object-contain"
                             />
                             {/* 장착된 아이템 표시 */}
-                            {comment.author.equippedItems && comment.author.equippedItems.length > 0 && (
+                            {displayEquippedItems && displayEquippedItems.length > 0 && (
                               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
-                                {comment.author.equippedItems.map((itemId) => {
+                                {displayEquippedItems.map((itemId) => {
                                   const item = items.find(i => i.id === itemId);
                                   if (!item) return null;
                                   
@@ -1186,7 +1192,8 @@ export default function App() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* Comment Input for all users */}
