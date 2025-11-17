@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ReportCard, Report, Comment, ReportStatus } from './components/ReportCard';
 import { SideMenu } from './components/SideMenu';
-import { MyPage } from './components/MyPage';
+import { MyPage, items } from './components/MyPage';
 import { ShopPage } from './components/ShopPage';
 import { SettingsPage } from './components/SettingsPage';
 import { LoginScreen } from './components/LoginScreen';
@@ -1115,12 +1115,51 @@ export default function App() {
                             관
                           </div>
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-visible">
                             <img 
                               src="/chacha.png" 
                               alt="차차" 
                               className="w-6 h-6 object-contain"
                             />
+                            {/* 장착된 아이템 표시 */}
+                            {comment.author.equippedItems && comment.author.equippedItems.length > 0 && (
+                              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
+                                {comment.author.equippedItems.map((itemId) => {
+                                  const item = items.find(i => i.id === itemId);
+                                  if (!item) return null;
+                                  
+                                  // 아이템 위치 조정 (작은 사이즈용)
+                                  let positionClass = '';
+                                  if (item.type === 'hat') positionClass = 'top-1';
+                                  else if (item.type === 'glasses') positionClass = 'top-1.5';
+                                  else if (item.type === 'face') positionClass = 'top-2';
+                                  else if (item.type === 'neck') positionClass = 'top-3';
+                                  
+                                  return (
+                                    <div 
+                                      key={itemId}
+                                      className={`absolute ${positionClass}`}
+                                    >
+                                      {item.layer ? (
+                                        <img 
+                                          src={item.layer} 
+                                          alt={item.name} 
+                                          className="w-6 h-6 object-contain" 
+                                        />
+                                      ) : item.image ? (
+                                        <img 
+                                          src={item.image} 
+                                          alt={item.name} 
+                                          className="w-6 h-6 object-contain" 
+                                        />
+                                      ) : (
+                                        <span className="text-xs">{item.emoji}</span>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
                           </div>
                         )}
                         <div className="flex-1">
@@ -1158,12 +1197,51 @@ export default function App() {
                         관
                       </div>
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center relative overflow-visible">
                         <img 
                           src="/chacha.png" 
                           alt="차차" 
                           className="w-6 h-6 object-contain"
                         />
+                        {/* 장착된 아이템 표시 */}
+                        {equippedItems && equippedItems.length > 0 && (
+                          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
+                            {equippedItems.map((itemId) => {
+                              const item = items.find(i => i.id === itemId);
+                              if (!item) return null;
+                              
+                              // 아이템 위치 조정 (작은 사이즈용)
+                              let positionClass = '';
+                              if (item.type === 'hat') positionClass = 'top-1';
+                              else if (item.type === 'glasses') positionClass = 'top-1.5';
+                              else if (item.type === 'face') positionClass = 'top-2';
+                              else if (item.type === 'neck') positionClass = 'top-3';
+                              
+                              return (
+                                <div 
+                                  key={itemId}
+                                  className={`absolute ${positionClass}`}
+                                >
+                                  {item.layer ? (
+                                    <img 
+                                      src={item.layer} 
+                                      alt={item.name} 
+                                      className="w-6 h-6 object-contain" 
+                                    />
+                                  ) : item.image ? (
+                                    <img 
+                                      src={item.image} 
+                                      alt={item.name} 
+                                      className="w-6 h-6 object-contain" 
+                                    />
+                                  ) : (
+                                    <span className="text-xs">{item.emoji}</span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     )}
                     <div className="flex-1 space-y-2">
@@ -1189,6 +1267,7 @@ export default function App() {
                             author: {
                               nickname: currentUser.nickname,
                               character: currentUser.character,
+                              equippedItems: equippedItems,
                             },
                             content: newComment,
                             timestamp: '방금 전',

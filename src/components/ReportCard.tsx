@@ -13,6 +13,7 @@ export interface Comment {
   author: {
     nickname: string;
     character: string;
+    equippedItems?: string[];
   };
   content: string;
   timestamp: string;
