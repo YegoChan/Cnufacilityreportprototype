@@ -7,7 +7,7 @@ import { SettingsPage } from './components/SettingsPage';
 import { LoginScreen } from './components/LoginScreen';
 import { PointTransaction } from './components/PointHistory';
 import { RankingUser } from './components/RankingSystem';
-import { Menu, Plus, TrendingUp, MapPin, X, ArrowUpDown, Shield, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ImageIcon, Camera } from 'lucide-react';
+import { Menu, Plus, TrendingUp, MapPin, X, ArrowUpDown, Shield, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ImageIcon, Camera, Pencil } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
 import {
@@ -725,14 +725,6 @@ export default function App() {
             </Button>
             <h1 className="text-base sm:text-lg font-bold">충남대학교 시설/불편 제보</h1>
             <div className="flex items-center gap-2">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setIsWriteDialogOpen(true)}
-                className="relative"
-              >
-                <Plus className="w-5 h-5" />
-              </Button>
               <NotificationPanel 
                 notifications={notifications}
                 reports={reports}
@@ -1545,6 +1537,17 @@ export default function App() {
           </div>
         </div>
       </footer>
+      
+      {/* 플로팅 액션 버튼 (FAB) - 글쓰기 */}
+      {isLoggedIn && (
+        <button
+          onClick={() => setIsWriteDialogOpen(true)}
+          className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
+          aria-label="새 제보 작성"
+        >
+          <Pencil className="w-7 h-7 group-hover:scale-110 transition-transform" />
+        </button>
+      )}
     </div>
   );
 }
