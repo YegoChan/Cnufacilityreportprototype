@@ -122,7 +122,7 @@ export function TutorialSlides({ onComplete }: TutorialSlidesProps) {
               <img 
                 src="/straw-hat-layer.png" 
                 alt="밀짚모자" 
-                className="absolute top-1 left-1/2 -translate-x-1/2 w-20 h-20 object-contain"
+                className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-20 object-contain"
               />
             </div>
             <div className="flex gap-2 mb-2">
