@@ -7,6 +7,7 @@ import { SettingsPage } from './components/SettingsPage';
 import { LoginScreen } from './components/LoginScreen';
 import { PointTransaction } from './components/PointHistory';
 import { RankingUser } from './components/RankingSystem';
+import { TutorialSlides } from './components/TutorialSlides';
 import { Menu, Plus, TrendingUp, MapPin, X, ArrowUpDown, Shield, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ImageIcon, Camera, Pencil } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
@@ -68,6 +69,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ nickname: string; character: string; department: string; studentId: string } | null>(null);
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [mapSelectedReport, setMapSelectedReport] = useState<Report | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
@@ -286,6 +288,15 @@ export default function App() {
     setPoints(200);
     setOwnedTitles(['none']);
     setOwnedItems([]);
+    
+    // 튜토리얼 완료 여부 체크 (studentId 기준)
+    const tutorialKey = `tutorial_completed_${studentId}`;
+    const hasCompletedTutorial = localStorage.getItem(tutorialKey);
+    
+    // 최초 로그인이면 튜토리얼 표시
+    if (!hasCompletedTutorial) {
+      setShowTutorial(true);
+    }
   };
 
   // 포인트 히스토리 추가
@@ -430,6 +441,14 @@ export default function App() {
     setIsLoggedIn(false);
     setCurrentUser(null);
     setIsSideMenuOpen(false);
+  };
+
+  const handleCompleteTutorial = () => {
+    if (currentUser) {
+      const tutorialKey = `tutorial_completed_${currentUser.studentId}`;
+      localStorage.setItem(tutorialKey, 'true');
+    }
+    setShowTutorial(false);
   };
 
   // 업적 체크 함수
@@ -643,6 +662,9 @@ export default function App() {
       style={{ fontSize: `${settings.fontSize}%` }}
     >
       <Toaster />
+      
+      {/* Tutorial Slides */}
+      {showTutorial && <TutorialSlides onComplete={handleCompleteTutorial} />}
       
       {/* Side Menu */}
       <SideMenu 
