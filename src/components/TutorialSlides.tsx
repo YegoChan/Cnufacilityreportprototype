@@ -113,17 +113,16 @@ export function TutorialSlides({ onComplete }: TutorialSlidesProps) {
       content: (
         <div className="space-y-6">
           <div className="bg-gradient-to-br from-blue-100 to-green-100 rounded-2xl p-6 flex flex-col items-center">
-            <div className="relative mb-4">
+            <div className="relative mb-4 w-24 h-24 flex items-center justify-center">
               <img 
                 src="/chacha.png" 
                 alt="차차" 
-                className="w-24 h-24 object-contain"
+                className="w-20 h-20 object-contain"
               />
               <img 
-                src="/crown-layer.png" 
-                alt="왕관" 
-                className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-16 object-contain"
-                style={{ transform: 'translateX(-50%) translateY(-8px)' }}
+                src="/straw-hat-layer.png" 
+                alt="밀짚모자" 
+                className="absolute top-1 left-1/2 -translate-x-1/2 w-20 h-20 object-contain"
               />
             </div>
             <div className="flex gap-2 mb-2">
@@ -157,10 +156,9 @@ export function TutorialSlides({ onComplete }: TutorialSlidesProps) {
                 className="w-28 h-28 object-contain"
               />
               <img 
-                src="/crown-layer.png" 
-                alt="왕관" 
-                className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-20 object-contain"
-                style={{ transform: 'translateX(-50%) translateY(-10px)' }}
+                src="/straw-hat-layer.png" 
+                alt="밀짚모자" 
+                className="absolute top-2 left-1/2 -translate-x-1/2 w-28 h-28 object-contain"
               />
             </div>
             <div className="text-center space-y-2">
